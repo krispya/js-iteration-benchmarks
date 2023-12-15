@@ -1,54 +1,54 @@
 {
   "name": "Iteration strategies",
-  "date": "2023-12-15T08:11:46.176Z",
+  "date": "2023-12-15T08:47:10.444Z",
   "version": "1.0.0",
   "results": [
     {
       "name": "SoA: Array",
-      "ops": 862306,
-      "margin": 0.84,
-      "percentSlower": 13.58
-    },
-    {
-      "name": "SoA: Float64Array",
-      "ops": 997835,
-      "margin": 0.68,
+      "ops": 28005,
+      "margin": 2.02,
       "percentSlower": 0
     },
     {
+      "name": "SoA: Float64Array",
+      "ops": 27164,
+      "margin": 0.96,
+      "percentSlower": 3
+    },
+    {
       "name": "SoA: Float32Array",
-      "ops": 532080,
-      "margin": 0.59,
-      "percentSlower": 46.68
+      "ops": 26576,
+      "margin": 0.66,
+      "percentSlower": 5.1
     },
     {
       "name": "SoA with object interface",
-      "ops": 203224,
-      "margin": 0.93,
-      "percentSlower": 79.63
+      "ops": 24260,
+      "margin": 0.96,
+      "percentSlower": 13.37
     },
     {
       "name": "AoS",
-      "ops": 507162,
-      "margin": 0.92,
-      "percentSlower": 49.17
+      "ops": 25239,
+      "margin": 0.8,
+      "percentSlower": 9.88
     },
     {
       "name": "AoS with getters/setters",
-      "ops": 499761,
-      "margin": 1.63,
-      "percentSlower": 49.92
+      "ops": 27296,
+      "margin": 0.97,
+      "percentSlower": 2.53
     },
     {
       "name": "Map",
-      "ops": 166495,
-      "margin": 1.42,
-      "percentSlower": 83.31
+      "ops": 23723,
+      "margin": 0.59,
+      "percentSlower": 15.29
     }
   ],
   "fastest": {
-    "name": "SoA: Float64Array",
-    "index": 1
+    "name": "SoA: Array",
+    "index": 0
   },
   "slowest": {
     "name": "Map",
