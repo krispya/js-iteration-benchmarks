@@ -9,6 +9,6 @@ pnpm bench iteration
 ```
 Or whatever your preferred package manager is.
 
-Right now we have the following benches:
+Right now we have the following benchmark suites:
 - `iteration`
 - `data-packing`
