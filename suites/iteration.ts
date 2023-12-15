@@ -15,8 +15,8 @@ benny.suite(
 
     return () => {
       for (let i = 0; i < COUNT; i++) {
-        vector3.x[i] *= 2;
-        vector3.y[i] *= 2;
+        vector3.x[i] += 2;
+        vector3.y[i] -= 2;
         vector3.z[i] *= 2;
       }
     };
@@ -31,8 +31,8 @@ benny.suite(
 
     return () => {
       for (let i = 0; i < COUNT; i++) {
-        vector3.x[i] *= 2;
-        vector3.y[i] *= 2;
+        vector3.x[i] += 2;
+        vector3.y[i] -= 2;
         vector3.z[i] *= 2;
       }
     };
@@ -47,8 +47,8 @@ benny.suite(
 
     return () => {
       for (let i = 0; i < COUNT; i++) {
-        vector3.x[i] *= 2;
-        vector3.y[i] *= 2;
+        vector3.x[i] += 2;
+        vector3.y[i] -= 2;
         vector3.z[i] *= 2;
       }
     };
@@ -66,8 +66,8 @@ benny.suite(
     return () => {
       for (let i = 0; i < COUNT; i++) {
         reader.index = i;
-        reader.x *= 2;
-        reader.y *= 2;
+        reader.x += 2;
+        reader.y -= 2;
         reader.z *= 2;
       }
     };
@@ -78,8 +78,8 @@ benny.suite(
 
     return () => {
       for (let i = 0; i < array.length; i++) {
-        array[i].x *= 2;
-        array[i].y *= 2;
+        array[i].x += 2;
+        array[i].y -= 2;
         array[i].z *= 2;
       }
     };
@@ -93,8 +93,8 @@ benny.suite(
 
     return () => {
       for (let i = 0; i < array.length; i++) {
-        array[i].x *= 2;
-        array[i].y *= 2;
+        array[i].x += 2;
+        array[i].y -= 2;
         array[i].z *= 2;
       }
     };
@@ -108,8 +108,8 @@ benny.suite(
     return () => {
       for (let i = 0; i < COUNT; i++) {
         const vector = map.get(i)!;
-        vector.x *= 2;
-        vector.y *= 2;
+        vector.x += 2;
+        vector.y -= 2;
         vector.z *= 2;
       }
     };

@@ -1,5 +1,4 @@
 import benny from "benny";
-import { Vector3, Vector3SoAReader, Vector3WithGetSet } from "./util/objects";
 
 const COUNT = 1000;
 
@@ -15,8 +14,8 @@ benny.suite(
 
     return () => {
       for (let i = 0; i < COUNT; i++) {
-        vector3.x[i] *= 2;
-        vector3.y[i] *= 2;
+        vector3.x[i] += 2;
+        vector3.y[i] -= 2;
         vector3.z[i] *= 2;
       }
     };
@@ -32,8 +31,8 @@ benny.suite(
 
     return () => {
       for (let i = 0; i < COUNT; i++) {
-        vector3.x[i] *= 2;
-        vector3.y[i] *= 2;
+        vector3.x[i] += 2;
+        vector3.y[i] -= 2;
         vector3.z[i] *= 2;
       }
     };
@@ -44,8 +43,8 @@ benny.suite(
 
     return () => {
       for (let i = 0; i < COUNT; i++) {
-        vector3[i * 3] *= 2;
-        vector3[i * 3 + 1] *= 2;
+        vector3[i * 3] += 2;
+        vector3[i * 3 + 1] -= 2;
         vector3[i * 3 + 2] *= 2;
       }
     };
@@ -60,8 +59,8 @@ benny.suite(
 
     return () => {
       for (let i = 0; i < COUNT; i++) {
-        vector3.x[i] *= 2;
-        vector3.y[i] *= 2;
+        vector3.x[i] += 2;
+        vector3.y[i] -= 2;
         vector3.z[i] *= 2;
       }
     };
@@ -77,8 +76,8 @@ benny.suite(
 
     return () => {
       for (let i = 0; i < COUNT; i++) {
-        vector3.x[i] *= 2;
-        vector3.y[i] *= 2;
+        vector3.x[i] += 2;
+        vector3.y[i] -= 2;
         vector3.z[i] *= 2;
       }
     };
@@ -89,8 +88,8 @@ benny.suite(
 
     return () => {
       for (let i = 0; i < COUNT; i++) {
-        vector3[i * 3] *= 2;
-        vector3[i * 3 + 1] *= 2;
+        vector3[i * 3] += 2;
+        vector3[i * 3 + 1] -= 2;
         vector3[i * 3 + 2] *= 2;
       }
     };
