@@ -89,3 +89,31 @@ export class Vector3SoAReader {
     this.store.z[this.index] = value;
   }
 }
+
+export class Float64Interface {
+  public store: Float64Array;
+
+  constructor(store: Float64Array) {
+    this.store = store;
+  }
+
+  read(index: number) {
+    return this.store[index];
+  }
+
+  write(index: number, value: number) {
+    this.store[index] = value;
+  }
+}
+
+export class Vector3SoAInterface {
+  public x: Float64Interface;
+  public y: Float64Interface;
+  public z: Float64Interface;
+
+  constructor(vector3: Vector3SoARepresentation) {
+    this.x = new Float64Interface(vector3.x as Float64Array);
+    this.y = new Float64Interface(vector3.y as Float64Array);
+    this.z = new Float64Interface(vector3.z as Float64Array);
+  }
+}

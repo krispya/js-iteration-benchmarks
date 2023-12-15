@@ -1,6 +1,7 @@
 import benny from "benny";
 import {
   Vector3,
+  Vector3SoAInterface,
   Vector3SoAReader,
   Vector3SoARepresentation,
   Vector3WithGetSet,
@@ -102,7 +103,7 @@ benny.suite(
     };
   }),
 
-  benny.add("SoA with object interface", () => {
+  benny.add("SoA with get/set interface", () => {
     // Setup
     const vector3 = {
       x: new Float64Array(COUNT).fill(1),
@@ -129,6 +130,36 @@ benny.suite(
     return () => {
       for (let i = 0; i < ITERATIONS; i++) {
         test(reader);
+      }
+    };
+  }),
+
+  benny.add("SoA with read/write interface", () => {
+    // Setup
+    const vector3 = {
+      x: new Float64Array(COUNT).fill(1),
+      y: new Float64Array(COUNT).fill(1),
+      z: new Float64Array(COUNT).fill(1),
+    };
+
+    const vecInterface = new Vector3SoAInterface(vector3);
+
+    function test(vecInterface: Vector3SoAInterface) {
+      for (let i = 0; i < COUNT; i++) {
+        vecInterface.x.write(i, vecInterface.x.read(i) + 2);
+        vecInterface.y.write(i, vecInterface.y.read(i) - 2);
+        vecInterface.z.write(i, vecInterface.z.read(i) * 2);
+      }
+    }
+
+    // Warmup
+    for (let i = 0; i < WARMUP_ITERATIONS; i++) {
+      test(vecInterface);
+    }
+
+    return () => {
+      for (let i = 0; i < ITERATIONS; i++) {
+        test(vecInterface);
       }
     };
   }),

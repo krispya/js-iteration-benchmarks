@@ -1,51 +1,63 @@
 {
-  "name": "Data packing strategies",
-  "date": "2023-12-15T18:59:21.807Z",
+  "name": "Iteration strategies",
+  "date": "2023-12-15T19:33:47.570Z",
   "version": "1.0.0",
   "results": [
     {
-      "name": "F64: Separate Arrays",
-      "ops": 33649,
-      "margin": 0.56,
+      "name": "SoA: Array",
+      "ops": 21484,
+      "margin": 0.35,
+      "percentSlower": 37.74
+    },
+    {
+      "name": "SoA: Float64Array",
+      "ops": 31054,
+      "margin": 0.49,
+      "percentSlower": 10
+    },
+    {
+      "name": "SoA: Float32Array",
+      "ops": 20979,
+      "margin": 0.44,
+      "percentSlower": 39.2
+    },
+    {
+      "name": "SoA with get/set interface",
+      "ops": 22247,
+      "margin": 0.39,
+      "percentSlower": 35.53
+    },
+    {
+      "name": "SoA with read/write interface",
+      "ops": 34505,
+      "margin": 0.29,
       "percentSlower": 0
     },
     {
-      "name": "F64: Packed Contiguous Array",
-      "ops": 33554,
-      "margin": 0.57,
-      "percentSlower": 0.28
+      "name": "AoS",
+      "ops": 31417,
+      "margin": 0.42,
+      "percentSlower": 8.95
     },
     {
-      "name": "F64: Packed Vector Array",
-      "ops": 33388,
-      "margin": 0.82,
-      "percentSlower": 0.78
+      "name": "AoS with getters/setters",
+      "ops": 27392,
+      "margin": 0.3,
+      "percentSlower": 20.61
     },
     {
-      "name": "F32: Separate Arrays",
-      "ops": 22213,
-      "margin": 0.86,
-      "percentSlower": 33.99
-    },
-    {
-      "name": "F32: Packed Contiguous Array",
-      "ops": 22167,
-      "margin": 1.01,
-      "percentSlower": 34.12
-    },
-    {
-      "name": "F32: Packed Vector Array",
-      "ops": 21575,
-      "margin": 0.83,
-      "percentSlower": 35.88
+      "name": "Map",
+      "ops": 9494,
+      "margin": 0.5,
+      "percentSlower": 72.49
     }
   ],
   "fastest": {
-    "name": "F64: Separate Arrays",
-    "index": 0
+    "name": "SoA with read/write interface",
+    "index": 4
   },
   "slowest": {
-    "name": "F32: Packed Vector Array",
-    "index": 5
+    "name": "Map",
+    "index": 7
   }
 }
