@@ -1,60 +1,109 @@
 import benny from "benny";
-import { Vector3, Vector3SoAReader, Vector3WithGetSet } from "./util/objects";
+import {
+  Vector3,
+  Vector3SoAReader,
+  Vector3SoARepresentation,
+  Vector3WithGetSet,
+} from "./util/objects";
 
-const COUNT = 1000;
+// Some Notes:
+// In order for a fair benchmark, all test functions need to have monomorphic arguments so that V8 can optimize them.
+// This is why all test functions are defined inside the benchmark function.
+// We also do a warmup to allow for V8 to optimize the code before we start measuring.
+
+const COUNT = 200;
+const ITERATIONS = 100;
+const WARMUP_ITERATIONS = 1;
 
 benny.suite(
   "Iteration strategies",
 
   benny.add("SoA: Array", () => {
+    // Setup
     const vector3 = {
       x: new Array(COUNT).fill(1),
       y: new Array(COUNT).fill(1),
       z: new Array(COUNT).fill(1),
     };
 
-    return () => {
-      for (let i = 0; i < COUNT; i++) {
+    function test(vector3: Vector3SoARepresentation) {
+      for (let i = 0; i < vector3.x.length; i++) {
         vector3.x[i] += 2;
         vector3.y[i] -= 2;
         vector3.z[i] *= 2;
+      }
+    }
+
+    // Warmup
+    for (let i = 0; i < WARMUP_ITERATIONS; i++) {
+      test(vector3);
+    }
+
+    return () => {
+      for (let i = 0; i < ITERATIONS; i++) {
+        test(vector3);
       }
     };
   }),
 
   benny.add("SoA: Float64Array", () => {
+    // Setup
     const vector3 = {
       x: new Float64Array(COUNT).fill(1),
       y: new Float64Array(COUNT).fill(1),
       z: new Float64Array(COUNT).fill(1),
     };
 
-    return () => {
-      for (let i = 0; i < COUNT; i++) {
+    function test(vector3: Vector3SoARepresentation) {
+      for (let i = 0; i < vector3.x.length; i++) {
         vector3.x[i] += 2;
         vector3.y[i] -= 2;
         vector3.z[i] *= 2;
+      }
+    }
+
+    // Warmup
+    for (let i = 0; i < WARMUP_ITERATIONS; i++) {
+      test(vector3);
+    }
+
+    return () => {
+      for (let i = 0; i < ITERATIONS; i++) {
+        test(vector3);
       }
     };
   }),
 
   benny.add("SoA: Float32Array", () => {
+    // Setup
     const vector3 = {
       x: new Float32Array(COUNT).fill(1),
       y: new Float32Array(COUNT).fill(1),
       z: new Float32Array(COUNT).fill(1),
     };
 
-    return () => {
-      for (let i = 0; i < COUNT; i++) {
+    function test(vector3: Vector3SoARepresentation) {
+      for (let i = 0; i < vector3.x.length; i++) {
         vector3.x[i] += 2;
         vector3.y[i] -= 2;
         vector3.z[i] *= 2;
+      }
+    }
+
+    // Warmup
+    for (let i = 0; i < WARMUP_ITERATIONS; i++) {
+      test(vector3);
+    }
+
+    return () => {
+      for (let i = 0; i < ITERATIONS; i++) {
+        test(vector3);
       }
     };
   }),
 
   benny.add("SoA with object interface", () => {
+    // Setup
     const vector3 = {
       x: new Float64Array(COUNT).fill(1),
       y: new Float64Array(COUNT).fill(1),
@@ -63,54 +112,100 @@ benny.suite(
 
     const reader = new Vector3SoAReader(vector3, 0);
 
-    return () => {
-      for (let i = 0; i < COUNT; i++) {
+    function test(reader: Vector3SoAReader) {
+      for (let i = 0; i < reader.store.x.length; i++) {
         reader.index = i;
         reader.x += 2;
         reader.y -= 2;
         reader.z *= 2;
       }
+    }
+
+    // Warmup
+    for (let i = 0; i < WARMUP_ITERATIONS; i++) {
+      test(reader);
+    }
+
+    return () => {
+      for (let i = 0; i < ITERATIONS; i++) {
+        test(reader);
+      }
     };
   }),
 
   benny.add("AoS", () => {
-    const array = Array.from({ length: COUNT }, (_, i) => new Vector3(1, 1, 1));
+    // Setup
+    const array = new Array(COUNT).fill(0).map(() => new Vector3(1, 1, 1));
 
-    return () => {
+    function test(array: Vector3[]) {
       for (let i = 0; i < array.length; i++) {
         array[i].x += 2;
         array[i].y -= 2;
         array[i].z *= 2;
+      }
+    }
+
+    // Warmup
+    for (let i = 0; i < WARMUP_ITERATIONS; i++) {
+      test(array);
+    }
+
+    return () => {
+      for (let i = 0; i < ITERATIONS; i++) {
+        test(array);
       }
     };
   }),
 
   benny.add("AoS with getters/setters", () => {
-    const array = Array.from(
-      { length: COUNT },
-      (_, i) => new Vector3WithGetSet(1, 1, 1)
-    );
+    // Setup
+    const array = new Array(COUNT)
+      .fill(0)
+      .map(() => new Vector3WithGetSet(1, 1, 1));
 
-    return () => {
+    function test(array: Vector3[]) {
       for (let i = 0; i < array.length; i++) {
         array[i].x += 2;
         array[i].y -= 2;
         array[i].z *= 2;
       }
+    }
+
+    // Warmup
+    for (let i = 0; i < WARMUP_ITERATIONS; i++) {
+      test(array);
+    }
+
+    return () => {
+      for (let i = 0; i < ITERATIONS; i++) {
+        test(array);
+      }
     };
   }),
 
   benny.add("Map", () => {
+    // Setup
     const map = new Map(
-      Array.from({ length: COUNT }, (_, i) => [i, new Vector3(1, 1, 1)])
+      new Array(COUNT).fill(0).map((_, i) => [i, new Vector3(1, 1, 1)])
     );
 
-    return () => {
-      for (let i = 0; i < COUNT; i++) {
+    function test(map: Map<number, Vector3>) {
+      for (let i = 0; i < map.size; i++) {
         const vector = map.get(i)!;
         vector.x += 2;
         vector.y -= 2;
         vector.z *= 2;
+      }
+    }
+
+    // Warmup
+    for (let i = 0; i < WARMUP_ITERATIONS; i++) {
+      test(map);
+    }
+
+    return () => {
+      for (let i = 0; i < ITERATIONS; i++) {
+        test(map);
       }
     };
   }),

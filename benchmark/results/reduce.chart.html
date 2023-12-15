@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
-    <title>Iteration strategies</title>
+    <title>Data packing strategies</title>
     <style>
       body {
         margin: 0;
@@ -28,7 +28,7 @@
   </head>
   <body>
     <div class="container">
-      <canvas id="chart1702627906176" width="16" height="9"></canvas>
+      <canvas id="chart1702666761807" width="16" height="9"></canvas>
     </div>
     <script>
       const format = (num) => {
@@ -51,18 +51,18 @@
           chunked.map((chunk) => chunk.join('')).join(' ') + fractionStr
         )
       }
-      const ctx1702627906176 = document
-        .getElementById('chart1702627906176')
+      const ctx1702666761807 = document
+        .getElementById('chart1702666761807')
         .getContext('2d')
-      const chart1702627906176 = new Chart(ctx1702627906176, {
+      const chart1702666761807 = new Chart(ctx1702666761807, {
         type: 'bar',
         data: {
-          labels: ["SoA: Array","SoA: Float64Array","SoA: Float32Array","SoA with object interface","AoS","AoS with getters/setters","Map"],
+          labels: ["F64: Separate Arrays","F64: Packed Contiguous Array","F64: Packed Vector Array","F32: Separate Arrays","F32: Packed Contiguous Array","F32: Packed Vector Array"],
           datasets: [
             {
-              data: [862306,997835,532080,203224,507162,499761,166495],
-              backgroundColor: ["hsl(103.704, 85%, 55%)","hsl(120, 85%, 55%)","hsl(63.984, 85%, 55%)","hsl(24.444000000000006, 85%, 55%)","hsl(60.995999999999995, 85%, 55%)","hsl(60.096000000000004, 85%, 55%)","hsl(20.027999999999995, 85%, 55%)"],
-              borderColor: ["hsl(103.704, 85%, 55%)","hsl(120, 85%, 55%)","hsl(63.984, 85%, 55%)","hsl(24.444000000000006, 85%, 55%)","hsl(60.995999999999995, 85%, 55%)","hsl(60.096000000000004, 85%, 55%)","hsl(20.027999999999995, 85%, 55%)"],
+              data: [33649,33554,33388,22213,22167,21575],
+              backgroundColor: ["hsl(120, 85%, 55%)","hsl(119.664, 85%, 55%)","hsl(119.064, 85%, 55%)","hsl(79.21199999999999, 85%, 55%)","hsl(79.056, 85%, 55%)","hsl(76.944, 85%, 55%)"],
+              borderColor: ["hsl(120, 85%, 55%)","hsl(119.664, 85%, 55%)","hsl(119.064, 85%, 55%)","hsl(79.21199999999999, 85%, 55%)","hsl(79.056, 85%, 55%)","hsl(76.944, 85%, 55%)"],
               borderWidth: 2,
             },
           ],
@@ -72,7 +72,7 @@
           plugins: {
             title: {
               display: true,
-              text: 'Iteration strategies',
+              text: 'Data packing strategies',
               font: { size: 20 },
               padding: 20,
             },

@@ -1,57 +1,51 @@
 {
-  "name": "Iteration strategies",
-  "date": "2023-12-15T08:11:46.176Z",
+  "name": "Data packing strategies",
+  "date": "2023-12-15T18:59:21.807Z",
   "version": "1.0.0",
   "results": [
     {
-      "name": "SoA: Array",
-      "ops": 862306,
-      "margin": 0.84,
-      "percentSlower": 13.58
-    },
-    {
-      "name": "SoA: Float64Array",
-      "ops": 997835,
-      "margin": 0.68,
+      "name": "F64: Separate Arrays",
+      "ops": 33649,
+      "margin": 0.56,
       "percentSlower": 0
     },
     {
-      "name": "SoA: Float32Array",
-      "ops": 532080,
-      "margin": 0.59,
-      "percentSlower": 46.68
+      "name": "F64: Packed Contiguous Array",
+      "ops": 33554,
+      "margin": 0.57,
+      "percentSlower": 0.28
     },
     {
-      "name": "SoA with object interface",
-      "ops": 203224,
-      "margin": 0.93,
-      "percentSlower": 79.63
+      "name": "F64: Packed Vector Array",
+      "ops": 33388,
+      "margin": 0.82,
+      "percentSlower": 0.78
     },
     {
-      "name": "AoS",
-      "ops": 507162,
-      "margin": 0.92,
-      "percentSlower": 49.17
+      "name": "F32: Separate Arrays",
+      "ops": 22213,
+      "margin": 0.86,
+      "percentSlower": 33.99
     },
     {
-      "name": "AoS with getters/setters",
-      "ops": 499761,
-      "margin": 1.63,
-      "percentSlower": 49.92
+      "name": "F32: Packed Contiguous Array",
+      "ops": 22167,
+      "margin": 1.01,
+      "percentSlower": 34.12
     },
     {
-      "name": "Map",
-      "ops": 166495,
-      "margin": 1.42,
-      "percentSlower": 83.31
+      "name": "F32: Packed Vector Array",
+      "ops": 21575,
+      "margin": 0.83,
+      "percentSlower": 35.88
     }
   ],
   "fastest": {
-    "name": "SoA: Float64Array",
-    "index": 1
+    "name": "F64: Separate Arrays",
+    "index": 0
   },
   "slowest": {
-    "name": "Map",
-    "index": 6
+    "name": "F32: Packed Vector Array",
+    "index": 5
   }
 }

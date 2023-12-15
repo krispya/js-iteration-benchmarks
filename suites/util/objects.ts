@@ -1,3 +1,10 @@
+export type Vector3Representation = { x: number; y: number; z: number };
+export type Vector3SoARepresentation = {
+  x: Float64Array | Float32Array | number[];
+  y: Float64Array | Float32Array | number[];
+  z: Float64Array | Float32Array | number[];
+};
+
 export class Vector3 {
   public x: number;
   public y: number;
