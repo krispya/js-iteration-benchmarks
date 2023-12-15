@@ -1,11 +1,7 @@
 import benny from "benny";
 import { Vector3, Vector3SoAReader, Vector3WithGetSet } from "./util/objects";
-import { OperationKey, getOperations } from "./util/operations";
 
 const COUNT = 1000;
-const OPERATION: OperationKey = "random";
-
-const ops = getOperations(COUNT, OPERATION);
 
 benny.suite(
   "Iteration strategies",
@@ -19,9 +15,9 @@ benny.suite(
 
     return () => {
       for (let i = 0; i < COUNT; i++) {
-        vector3.x[i] = ops[i](vector3.x[i]);
-        vector3.y[i] = ops[i](vector3.y[i]);
-        vector3.z[i] = ops[i](vector3.z[i]);
+        vector3.x[i] *= 2;
+        vector3.y[i] *= 2;
+        vector3.z[i] *= 2;
       }
     };
   }),
@@ -35,9 +31,9 @@ benny.suite(
 
     return () => {
       for (let i = 0; i < COUNT; i++) {
-        vector3.x[i] = ops[i](vector3.x[i]);
-        vector3.y[i] = ops[i](vector3.y[i]);
-        vector3.z[i] = ops[i](vector3.z[i]);
+        vector3.x[i] *= 2;
+        vector3.y[i] *= 2;
+        vector3.z[i] *= 2;
       }
     };
   }),
@@ -51,9 +47,9 @@ benny.suite(
 
     return () => {
       for (let i = 0; i < COUNT; i++) {
-        vector3.x[i] = ops[i](vector3.x[i]);
-        vector3.y[i] = ops[i](vector3.y[i]);
-        vector3.z[i] = ops[i](vector3.z[i]);
+        vector3.x[i] *= 2;
+        vector3.y[i] *= 2;
+        vector3.z[i] *= 2;
       }
     };
   }),
@@ -70,9 +66,9 @@ benny.suite(
     return () => {
       for (let i = 0; i < COUNT; i++) {
         reader.index = i;
-        reader.x = ops[i](reader.x);
-        reader.y = ops[i](reader.y);
-        reader.z = ops[i](reader.z);
+        reader.x *= 2;
+        reader.y *= 2;
+        reader.z *= 2;
       }
     };
   }),
@@ -82,9 +78,9 @@ benny.suite(
 
     return () => {
       for (let i = 0; i < array.length; i++) {
-        array[i].x = ops[i](array[i].x);
-        array[i].y = ops[i](array[i].y);
-        array[i].z = ops[i](array[i].z);
+        array[i].x *= 2;
+        array[i].y *= 2;
+        array[i].z *= 2;
       }
     };
   }),
@@ -97,9 +93,9 @@ benny.suite(
 
     return () => {
       for (let i = 0; i < array.length; i++) {
-        array[i].x = ops[i](array[i].x);
-        array[i].y = ops[i](array[i].y);
-        array[i].z = ops[i](array[i].z);
+        array[i].x *= 2;
+        array[i].y *= 2;
+        array[i].z *= 2;
       }
     };
   }),
@@ -112,9 +108,9 @@ benny.suite(
     return () => {
       for (let i = 0; i < COUNT; i++) {
         const vector = map.get(i)!;
-        vector.x = ops[i](vector.x);
-        vector.y = ops[i](vector.y);
-        vector.z = ops[i](vector.z);
+        vector.x *= 2;
+        vector.y *= 2;
+        vector.z *= 2;
       }
     };
   }),

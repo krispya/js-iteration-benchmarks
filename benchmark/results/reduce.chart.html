@@ -28,7 +28,7 @@
   </head>
   <body>
     <div class="container">
-      <canvas id="chart1702630030444" width="16" height="9"></canvas>
+      <canvas id="chart1702627906176" width="16" height="9"></canvas>
     </div>
     <script>
       const format = (num) => {
@@ -51,18 +51,18 @@
           chunked.map((chunk) => chunk.join('')).join(' ') + fractionStr
         )
       }
-      const ctx1702630030444 = document
-        .getElementById('chart1702630030444')
+      const ctx1702627906176 = document
+        .getElementById('chart1702627906176')
         .getContext('2d')
-      const chart1702630030444 = new Chart(ctx1702630030444, {
+      const chart1702627906176 = new Chart(ctx1702627906176, {
         type: 'bar',
         data: {
           labels: ["SoA: Array","SoA: Float64Array","SoA: Float32Array","SoA with object interface","AoS","AoS with getters/setters","Map"],
           datasets: [
             {
-              data: [28005,27164,26576,24260,25239,27296,23723],
-              backgroundColor: ["hsl(120, 85%, 55%)","hsl(116.39999999999999, 85%, 55%)","hsl(113.88000000000001, 85%, 55%)","hsl(103.95599999999999, 85%, 55%)","hsl(108.144, 85%, 55%)","hsl(116.964, 85%, 55%)","hsl(101.65200000000002, 85%, 55%)"],
-              borderColor: ["hsl(120, 85%, 55%)","hsl(116.39999999999999, 85%, 55%)","hsl(113.88000000000001, 85%, 55%)","hsl(103.95599999999999, 85%, 55%)","hsl(108.144, 85%, 55%)","hsl(116.964, 85%, 55%)","hsl(101.65200000000002, 85%, 55%)"],
+              data: [862306,997835,532080,203224,507162,499761,166495],
+              backgroundColor: ["hsl(103.704, 85%, 55%)","hsl(120, 85%, 55%)","hsl(63.984, 85%, 55%)","hsl(24.444000000000006, 85%, 55%)","hsl(60.995999999999995, 85%, 55%)","hsl(60.096000000000004, 85%, 55%)","hsl(20.027999999999995, 85%, 55%)"],
+              borderColor: ["hsl(103.704, 85%, 55%)","hsl(120, 85%, 55%)","hsl(63.984, 85%, 55%)","hsl(24.444000000000006, 85%, 55%)","hsl(60.995999999999995, 85%, 55%)","hsl(60.096000000000004, 85%, 55%)","hsl(20.027999999999995, 85%, 55%)"],
               borderWidth: 2,
             },
           ],
