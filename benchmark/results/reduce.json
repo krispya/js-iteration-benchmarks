@@ -1,0 +1,57 @@
+{
+  "name": "Iteration strategies",
+  "date": "2023-12-15T07:40:39.692Z",
+  "version": "1.0.0",
+  "results": [
+    {
+      "name": "SoA: Array",
+      "ops": 2060292,
+      "margin": 0.87,
+      "percentSlower": 18.79
+    },
+    {
+      "name": "SoA: Float32Array",
+      "ops": 1395944,
+      "margin": 0.61,
+      "percentSlower": 44.98
+    },
+    {
+      "name": "SoA: Float64Array",
+      "ops": 2536944,
+      "margin": 0.47,
+      "percentSlower": 0
+    },
+    {
+      "name": "SoA with object interface",
+      "ops": 929513,
+      "margin": 0.54,
+      "percentSlower": 63.36
+    },
+    {
+      "name": "AoS",
+      "ops": 935784,
+      "margin": 3.08,
+      "percentSlower": 63.11
+    },
+    {
+      "name": "AoS with getters/setters",
+      "ops": 898887,
+      "margin": 3.22,
+      "percentSlower": 64.57
+    },
+    {
+      "name": "Map",
+      "ops": 185715,
+      "margin": 0.94,
+      "percentSlower": 92.68
+    }
+  ],
+  "fastest": {
+    "name": "SoA: Float64Array",
+    "index": 2
+  },
+  "slowest": {
+    "name": "Map",
+    "index": 6
+  }
+}
