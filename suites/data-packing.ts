@@ -4,7 +4,7 @@ import { Vector3, Vector3SoAReader, Vector3WithGetSet } from "./util/objects";
 const COUNT = 1000;
 
 benny.suite(
-  "Data packing strategies: Float64Array",
+  "Data packing strategies",
 
   benny.add("F64: Separate Arrays", () => {
     const vector3 = {
@@ -62,7 +62,7 @@ benny.suite(
     };
   }),
 
-  benny.add("F34: Packed Contiguous Array", () => {
+  benny.add("F32: Packed Contiguous Array", () => {
     const vector3 = new Float32Array(COUNT * 3).fill(1);
 
     return () => {
