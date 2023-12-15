@@ -23,13 +23,18 @@ benny.suite(
   }),
 
   benny.add("F64: Packed Contiguous Array", () => {
-    const vector3 = new Float64Array(COUNT * 3).fill(1);
+    const buffer = new Float64Array(COUNT * 3).fill(1);
+    const vector3 = {
+      x: buffer.subarray(0, COUNT),
+      y: buffer.subarray(COUNT, COUNT * 2),
+      z: buffer.subarray(COUNT * 2, COUNT * 3),
+    };
 
     return () => {
       for (let i = 0; i < COUNT; i++) {
-        vector3[i] *= 2;
-        vector3[i * 2 + 1] *= 2;
-        vector3[i * 3 + 2] *= 2;
+        vector3.x[i] *= 2;
+        vector3.y[i] *= 2;
+        vector3.z[i] *= 2;
       }
     };
   }),
@@ -63,13 +68,18 @@ benny.suite(
   }),
 
   benny.add("F32: Packed Contiguous Array", () => {
-    const vector3 = new Float32Array(COUNT * 3).fill(1);
+    const buffer = new Float32Array(COUNT * 3).fill(1);
+    const vector3 = {
+      x: buffer.subarray(0, COUNT),
+      y: buffer.subarray(COUNT, COUNT * 2),
+      z: buffer.subarray(COUNT * 2, COUNT * 3),
+    };
 
     return () => {
       for (let i = 0; i < COUNT; i++) {
-        vector3[i] *= 2;
-        vector3[i * 2 + 1] *= 2;
-        vector3[i * 3 + 2] *= 2;
+        vector3.x[i] *= 2;
+        vector3.y[i] *= 2;
+        vector3.z[i] *= 2;
       }
     };
   }),
