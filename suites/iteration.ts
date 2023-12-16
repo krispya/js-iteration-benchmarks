@@ -188,7 +188,7 @@ benny.suite(
     };
   }),
 
-  benny.add("AoS with getters/setters", () => {
+  benny.add("AoS with get/set", () => {
     // Setup
     const array = new Array(COUNT)
       .fill(0)
