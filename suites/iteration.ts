@@ -1,11 +1,19 @@
 import benny from "benny";
 import {
+  createFloat64Interface,
   Vector3,
+  vector3BufferObject,
   Vector3SoAInterface,
+  Vector3SoAInterfaceStatic,
   Vector3SoAReader,
   Vector3SoARepresentation,
   Vector3WithGetSet,
 } from "./util/objects";
+import {
+  Vector3SoAInterfaceWithEvents,
+  Vector3WithGetSetWithEvents,
+  observePropertyWithDefine,
+} from "./util/events";
 
 // Some Notes:
 // In order for a fair benchmark, all test functions need to have monomorphic arguments so that V8 can optimize them.
@@ -14,40 +22,270 @@ import {
 
 const COUNT = 200;
 const ITERATIONS = 100;
-const WARMUP_ITERATIONS = 1;
+const WARMUP_ITERATIONS = 1000;
 
 benny.suite(
   "Iteration strategies",
 
-  benny.add("SoA: Array", () => {
-    // Setup
-    const vector3 = {
-      x: new Array(COUNT).fill(1),
-      y: new Array(COUNT).fill(1),
-      z: new Array(COUNT).fill(1),
-    };
+  // benny.add("SoA: Array", () => {
+  //   // Setup
+  //   const vector3 = {
+  //     x: new Array(COUNT).fill(1),
+  //     y: new Array(COUNT).fill(1),
+  //     z: new Array(COUNT).fill(1),
+  //   };
 
-    function test(vector3: Vector3SoARepresentation) {
-      for (let i = 0; i < vector3.x.length; i++) {
-        vector3.x[i] += 2;
-        vector3.y[i] -= 2;
-        vector3.z[i] *= 2;
+  //   function test(vector3: Vector3SoARepresentation) {
+  //     for (let i = 0; i < vector3.x.length; i++) {
+  //       vector3.x[i] += 2;
+  //       vector3.y[i] -= 2;
+  //       vector3.z[i] *= 2;
+  //     }
+  //   }
+
+  //   // Warmup
+  //   for (let i = 0; i < WARMUP_ITERATIONS; i++) {
+  //     test(vector3);
+  //   }
+
+  //   return () => {
+  //     for (let i = 0; i < ITERATIONS; i++) {
+  //       test(vector3);
+  //     }
+  //   };
+  // }),
+
+  // benny.add("SoA: Float64Array", () => {
+  //   // Setup
+  //   const vector3 = {
+  //     x: new Float64Array(COUNT).fill(1),
+  //     y: new Float64Array(COUNT).fill(1),
+  //     z: new Float64Array(COUNT).fill(1),
+  //   };
+
+  //   function test(vector3: Vector3SoARepresentation) {
+  //     for (let i = 0; i < vector3.x.length; i++) {
+  //       vector3.x[i] += 2;
+  //       vector3.y[i] -= 2;
+  //       vector3.z[i] *= 2;
+  //     }
+  //   }
+
+  //   // Warmup
+  //   for (let i = 0; i < WARMUP_ITERATIONS; i++) {
+  //     test(vector3);
+  //   }
+
+  //   return () => {
+  //     for (let i = 0; i < ITERATIONS; i++) {
+  //       test(vector3);
+  //     }
+  //   };
+  // }),
+
+  // benny.add("SoA: Float32Array", () => {
+  //   // Setup
+  //   const vector3 = {
+  //     x: new Float32Array(COUNT).fill(1),
+  //     y: new Float32Array(COUNT).fill(1),
+  //     z: new Float32Array(COUNT).fill(1),
+  //   };
+
+  //   function test(vector3: Vector3SoARepresentation) {
+  //     for (let i = 0; i < vector3.x.length; i++) {
+  //       vector3.x[i] += 2;
+  //       vector3.y[i] -= 2;
+  //       vector3.z[i] *= 2;
+  //     }
+  //   }
+
+  //   // Warmup
+  //   for (let i = 0; i < WARMUP_ITERATIONS; i++) {
+  //     test(vector3);
+  //   }
+
+  //   return () => {
+  //     for (let i = 0; i < ITERATIONS; i++) {
+  //       test(vector3);
+  //     }
+  //   };
+  // }),
+
+  // benny.add("SoA with get/set interface", () => {
+  //   // Setup
+  //   const vector3 = {
+  //     x: new Float64Array(COUNT).fill(1),
+  //     y: new Float64Array(COUNT).fill(1),
+  //     z: new Float64Array(COUNT).fill(1),
+  //   };
+
+  //   const reader = new Vector3SoAReader(vector3, 0);
+
+  //   function test(reader: Vector3SoAReader) {
+  //     for (let i = 0; i < reader.store.x.length; i++) {
+  //       reader.index = i;
+  //       reader.x += 2;
+  //       reader.y -= 2;
+  //       reader.z *= 2;
+  //     }
+  //   }
+
+  //   // Warmup
+  //   for (let i = 0; i < WARMUP_ITERATIONS; i++) {
+  //     test(reader);
+  //   }
+
+  //   return () => {
+  //     for (let i = 0; i < ITERATIONS; i++) {
+  //       test(reader);
+  //     }
+  //   };
+  // }),
+
+  // benny.add("SoA with read/write interface", () => {
+  //   // Setup
+  //   const vector3 = {
+  //     x: new Float64Array(COUNT).fill(1),
+  //     y: new Float64Array(COUNT).fill(1),
+  //     z: new Float64Array(COUNT).fill(1),
+  //   };
+
+  //   const vecInterface = new Vector3SoAInterface(vector3);
+
+  //   const test = () => {
+  //     const { x, y, z } = vecInterface;
+  //     for (let i = 0; i < COUNT; i++) {
+  //       x.write(i, x.read(i) + 2);
+  //       y.write(i, y.read(i) - 2);
+  //       z.write(i, z.read(i) * 2);
+  //     }
+  //   };
+
+  //   // Warmup
+  //   for (let i = 0; i < WARMUP_ITERATIONS; i++) {
+  //     test();
+  //   }
+
+  //   return () => {
+  //     for (let i = 0; i < ITERATIONS; i++) {
+  //       test();
+  //     }
+  //   };
+  // }),
+
+  // benny.add("SoA with read/write interface from STATIC property", () => {
+  //   // Setup
+  //   // const vecInterface = new Vector3SoAInterface(
+  //   //   Vector3SoAInterfaceStatic.buffersRaw
+  //   // );
+
+  //   // const vecInterface = {
+  //   //   x: createFloat64Interface(new Float64Array(COUNT).fill(1)),
+  //   //   y: createFloat64Interface(new Float64Array(COUNT).fill(1)),
+  //   //   z: createFloat64Interface(new Float64Array(COUNT).fill(1)),
+  //   // };
+
+  //   const test = () => {
+  //     const { x, y, z } = Vector3SoAInterfaceStatic.buffers;
+  //     for (let i = 0; i < COUNT; i++) {
+  //       x.write(i, x.read(i) + 2);
+  //       y.write(i, y.read(i) - 2);
+  //       z.write(i, z.read(i) * 2);
+  //     }
+  //   };
+
+  //   // Warmup
+  //   for (let i = 0; i < WARMUP_ITERATIONS; i++) {
+  //     test();
+  //   }
+
+  //   return () => {
+  //     for (let i = 0; i < ITERATIONS; i++) {
+  //       test();
+  //     }
+  //   };
+  // }),
+
+  // benny.add("SoA with read/write interface w/ getBuffers STATIC", () => {
+  //   // Setup
+  //   const { x, y, z } = Vector3SoAInterfaceStatic.getBuffersInterface();
+
+  //   function test() {
+  //     for (let i = 0; i < COUNT; i++) {
+  //       x.write(i, x.read(i) + 2);
+  //       y.write(i, y.read(i) - 2);
+  //       z.write(i, z.read(i) * 2);
+  //     }
+  //   }
+
+  //   // Warmup
+  //   for (let i = 0; i < WARMUP_ITERATIONS; i++) {
+  //     test();
+  //   }
+
+  //   return () => {
+  //     for (let i = 0; i < ITERATIONS; i++) {
+  //       test();
+  //     }
+  //   };
+  // }),
+
+  // benny.add("SoA with read/write interface w/ object literal", () => {
+  //   // Setup
+  //   const x = createFloat64Interface(new Float64Array(COUNT).fill(1));
+  //   const y = createFloat64Interface(new Float64Array(COUNT).fill(1));
+  //   const z = createFloat64Interface(new Float64Array(COUNT).fill(1));
+
+  //   function test() {
+  //     for (let i = 0; i < COUNT; i++) {
+  //       x.write(i, x.read(i) + 2);
+  //       y.write(i, y.read(i) - 2);
+  //       z.write(i, z.read(i) * 2);
+  //     }
+  //   }
+
+  //   // Warmup
+  //   for (let i = 0; i < WARMUP_ITERATIONS; i++) {
+  //     test();
+  //   }
+
+  //   return () => {
+  //     for (let i = 0; i < ITERATIONS; i++) {
+  //       test();
+  //     }
+  //   };
+  // }),
+
+  benny.add("SoA with read/write interface w/ update method", () => {
+    // Setup
+    // const vector3 = {
+    //   x: new Float64Array(COUNT).fill(1),
+    //   y: new Float64Array(COUNT).fill(1),
+    //   z: new Float64Array(COUNT).fill(1),
+    // };
+
+    // const vecInterface = new Vector3SoAInterface(vector3);
+
+    function test() {
+      for (let i = 0; i < COUNT; i++) {
+        // vecInterface.update(i);
+        Vector3SoAInterfaceStatic.update(i);
       }
     }
 
     // Warmup
     for (let i = 0; i < WARMUP_ITERATIONS; i++) {
-      test(vector3);
+      test();
     }
 
     return () => {
       for (let i = 0; i < ITERATIONS; i++) {
-        test(vector3);
+        test();
       }
     };
   }),
 
-  benny.add("SoA: Float64Array", () => {
+  benny.add("SoA with read/write interface w/ events", () => {
     // Setup
     const vector3 = {
       x: new Float64Array(COUNT).fill(1),
@@ -55,96 +293,9 @@ benny.suite(
       z: new Float64Array(COUNT).fill(1),
     };
 
-    function test(vector3: Vector3SoARepresentation) {
-      for (let i = 0; i < vector3.x.length; i++) {
-        vector3.x[i] += 2;
-        vector3.y[i] -= 2;
-        vector3.z[i] *= 2;
-      }
-    }
+    const vecInterface = new Vector3SoAInterfaceWithEvents(vector3);
 
-    // Warmup
-    for (let i = 0; i < WARMUP_ITERATIONS; i++) {
-      test(vector3);
-    }
-
-    return () => {
-      for (let i = 0; i < ITERATIONS; i++) {
-        test(vector3);
-      }
-    };
-  }),
-
-  benny.add("SoA: Float32Array", () => {
-    // Setup
-    const vector3 = {
-      x: new Float32Array(COUNT).fill(1),
-      y: new Float32Array(COUNT).fill(1),
-      z: new Float32Array(COUNT).fill(1),
-    };
-
-    function test(vector3: Vector3SoARepresentation) {
-      for (let i = 0; i < vector3.x.length; i++) {
-        vector3.x[i] += 2;
-        vector3.y[i] -= 2;
-        vector3.z[i] *= 2;
-      }
-    }
-
-    // Warmup
-    for (let i = 0; i < WARMUP_ITERATIONS; i++) {
-      test(vector3);
-    }
-
-    return () => {
-      for (let i = 0; i < ITERATIONS; i++) {
-        test(vector3);
-      }
-    };
-  }),
-
-  benny.add("SoA with get/set interface", () => {
-    // Setup
-    const vector3 = {
-      x: new Float64Array(COUNT).fill(1),
-      y: new Float64Array(COUNT).fill(1),
-      z: new Float64Array(COUNT).fill(1),
-    };
-
-    const reader = new Vector3SoAReader(vector3, 0);
-
-    function test(reader: Vector3SoAReader) {
-      for (let i = 0; i < reader.store.x.length; i++) {
-        reader.index = i;
-        reader.x += 2;
-        reader.y -= 2;
-        reader.z *= 2;
-      }
-    }
-
-    // Warmup
-    for (let i = 0; i < WARMUP_ITERATIONS; i++) {
-      test(reader);
-    }
-
-    return () => {
-      for (let i = 0; i < ITERATIONS; i++) {
-        test(reader);
-      }
-    };
-  }),
-
-  benny.add("SoA with read/write interface", () => {
-    // Setup
-    const vector3 = {
-      x: new Float64Array(COUNT).fill(1),
-      y: new Float64Array(COUNT).fill(1),
-      z: new Float64Array(COUNT).fill(1),
-    };
-
-    const vecInterface = new Vector3SoAInterface(vector3);
-
-    function test(vecInterface: Vector3SoAInterface) {
+    function test(vecInterface: Vector3SoAInterfaceWithEvents) {
       for (let i = 0; i < COUNT; i++) {
         vecInterface.x.write(i, vecInterface.x.read(i) + 2);
         vecInterface.y.write(i, vecInterface.y.read(i) - 2);
@@ -164,29 +315,55 @@ benny.suite(
     };
   }),
 
-  benny.add("AoS", () => {
-    // Setup
-    const array = new Array(COUNT).fill(0).map(() => new Vector3(1, 1, 1));
+  // benny.add("AoS", () => {
+  //   // Setup
+  //   const array = new Array(COUNT).fill(0).map(() => new Vector3(1, 1, 1));
 
-    function test(array: Vector3[]) {
-      for (let i = 0; i < array.length; i++) {
-        array[i].x += 2;
-        array[i].y -= 2;
-        array[i].z *= 2;
-      }
-    }
+  //   function test(array: Vector3[]) {
+  //     for (let i = 0; i < array.length; i++) {
+  //       array[i].x += 2;
+  //       array[i].y -= 2;
+  //       array[i].z *= 2;
+  //     }
+  //   }
 
-    // Warmup
-    for (let i = 0; i < WARMUP_ITERATIONS; i++) {
-      test(array);
-    }
+  //   // Warmup
+  //   for (let i = 0; i < WARMUP_ITERATIONS; i++) {
+  //     test(array);
+  //   }
 
-    return () => {
-      for (let i = 0; i < ITERATIONS; i++) {
-        test(array);
-      }
-    };
-  }),
+  //   return () => {
+  //     for (let i = 0; i < ITERATIONS; i++) {
+  //       test(array);
+  //     }
+  //   };
+  // }),
+
+  // benny.add("AoS w/ selective property observe w/ define", () => {
+  //   // Setup
+  //   const array = new Array(COUNT).fill(0).map(() => new Vector3(1, 1, 1));
+
+  //   function test(array: Vector3[]) {
+  //     for (let i = 0; i < array.length; i++) {
+  //       array[i].x += 2;
+  //       array[i].y -= 2;
+  //       array[i].z *= 2;
+  //     }
+  //   }
+
+  //   observePropertyWithDefine(array[0], "x", () => {});
+
+  //   // Warmup
+  //   for (let i = 0; i < WARMUP_ITERATIONS; i++) {
+  //     test(array);
+  //   }
+
+  //   return () => {
+  //     for (let i = 0; i < ITERATIONS; i++) {
+  //       test(array);
+  //     }
+  //   };
+  // }),
 
   benny.add("AoS with get/set", () => {
     // Setup
@@ -214,32 +391,58 @@ benny.suite(
     };
   }),
 
-  benny.add("Map", () => {
+  benny.add("AoS with get/set w/ events", () => {
     // Setup
-    const map = new Map(
-      new Array(COUNT).fill(0).map((_, i) => [i, new Vector3(1, 1, 1)])
-    );
+    const array = new Array(COUNT)
+      .fill(0)
+      .map(() => new Vector3WithGetSetWithEvents(1, 1, 1));
 
-    function test(map: Map<number, Vector3>) {
-      for (let i = 0; i < map.size; i++) {
-        const vector = map.get(i)!;
-        vector.x += 2;
-        vector.y -= 2;
-        vector.z *= 2;
+    function test(array: Vector3[]) {
+      for (let i = 0; i < array.length; i++) {
+        array[i].x += 2;
+        array[i].y -= 2;
+        array[i].z *= 2;
       }
     }
 
     // Warmup
     for (let i = 0; i < WARMUP_ITERATIONS; i++) {
-      test(map);
+      test(array);
     }
 
     return () => {
       for (let i = 0; i < ITERATIONS; i++) {
-        test(map);
+        test(array);
       }
     };
   }),
+
+  // benny.add("Map", () => {
+  //   // Setup
+  //   const map = new Map(
+  //     new Array(COUNT).fill(0).map((_, i) => [i, new Vector3(1, 1, 1)])
+  //   );
+
+  //   function test(map: Map<number, Vector3>) {
+  //     for (let i = 0; i < map.size; i++) {
+  //       const vector = map.get(i)!;
+  //       vector.x += 2;
+  //       vector.y -= 2;
+  //       vector.z *= 2;
+  //     }
+  //   }
+
+  //   // Warmup
+  //   for (let i = 0; i < WARMUP_ITERATIONS; i++) {
+  //     test(map);
+  //   }
+
+  //   return () => {
+  //     for (let i = 0; i < ITERATIONS; i++) {
+  //       test(map);
+  //     }
+  //   };
+  // }),
 
   benny.cycle(),
   benny.complete(),

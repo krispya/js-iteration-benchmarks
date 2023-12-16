@@ -28,7 +28,7 @@
   </head>
   <body>
     <div class="container">
-      <canvas id="chart1702668827570" width="16" height="9"></canvas>
+      <canvas id="chart1702766138056" width="16" height="9"></canvas>
     </div>
     <script>
       const format = (num) => {
@@ -51,18 +51,18 @@
           chunked.map((chunk) => chunk.join('')).join(' ') + fractionStr
         )
       }
-      const ctx1702668827570 = document
-        .getElementById('chart1702668827570')
+      const ctx1702766138056 = document
+        .getElementById('chart1702766138056')
         .getContext('2d')
-      const chart1702668827570 = new Chart(ctx1702668827570, {
+      const chart1702766138056 = new Chart(ctx1702766138056, {
         type: 'bar',
         data: {
-          labels: ["SoA: Array","SoA: Float64Array","SoA: Float32Array","SoA with get/set interface","SoA with read/write interface","AoS","AoS with getters/setters","Map"],
+          labels: ["SoA with read/write interface w/ update method","SoA with read/write interface w/ events","AoS with get/set","AoS with get/set w/ events"],
           datasets: [
             {
-              data: [21484,31054,20979,22247,34505,31417,27392,9494],
-              backgroundColor: ["hsl(74.71199999999999, 85%, 55%)","hsl(108, 85%, 55%)","hsl(72.96, 85%, 55%)","hsl(77.36399999999999, 85%, 55%)","hsl(120, 85%, 55%)","hsl(109.25999999999999, 85%, 55%)","hsl(95.268, 85%, 55%)","hsl(33.01200000000001, 85%, 55%)"],
-              borderColor: ["hsl(74.71199999999999, 85%, 55%)","hsl(108, 85%, 55%)","hsl(72.96, 85%, 55%)","hsl(77.36399999999999, 85%, 55%)","hsl(120, 85%, 55%)","hsl(109.25999999999999, 85%, 55%)","hsl(95.268, 85%, 55%)","hsl(33.01200000000001, 85%, 55%)"],
+              data: [54170,36232,29252,22755],
+              backgroundColor: ["hsl(120, 85%, 55%)","hsl(80.268, 85%, 55%)","hsl(64.80000000000001, 85%, 55%)","hsl(50.412, 85%, 55%)"],
+              borderColor: ["hsl(120, 85%, 55%)","hsl(80.268, 85%, 55%)","hsl(64.80000000000001, 85%, 55%)","hsl(50.412, 85%, 55%)"],
               borderWidth: 2,
             },
           ],

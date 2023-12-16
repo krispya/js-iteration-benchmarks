@@ -1,3 +1,5 @@
+import { buffer } from "stream/consumers";
+
 export type Vector3Representation = { x: number; y: number; z: number };
 export type Vector3SoARepresentation = {
   x: Float64Array | Float32Array | number[];
@@ -6,6 +8,12 @@ export type Vector3SoARepresentation = {
 };
 
 export class Vector3 {
+  static buffers = {
+    x: new Float64Array(1000),
+    y: new Float64Array(1000),
+    z: new Float64Array(1000),
+  };
+
   public x: number;
   public y: number;
   public z: number;
@@ -90,6 +98,17 @@ export class Vector3SoAReader {
   }
 }
 
+export const createFloat64Interface = (buffer: Float64Array) => {
+  return {
+    read(index: number) {
+      return buffer[index];
+    },
+    write(index: number, value: number) {
+      buffer[index] = value;
+    },
+  };
+};
+
 export class Float64Interface {
   public store: Float64Array;
 
@@ -116,4 +135,50 @@ export class Vector3SoAInterface {
     this.y = new Float64Interface(vector3.y as Float64Array);
     this.z = new Float64Interface(vector3.z as Float64Array);
   }
+
+  update(index: number) {
+    this.x.write(index, this.x.read(index) + 2);
+    this.y.write(index, this.y.read(index) - 2);
+    this.z.write(index, this.z.read(index) * 2);
+  }
 }
+
+export class Vector3SoAInterfaceStatic {
+  // static buffers = {
+  //   x: new Float64Interface(new Float64Array(1000)),
+  //   y: new Float64Interface(new Float64Array(1000)),
+  //   z: new Float64Interface(new Float64Array(1000)),
+  // };
+
+  static buffers = {
+    x: createFloat64Interface(new Float64Array(1000)),
+    y: createFloat64Interface(new Float64Array(1000)),
+    z: createFloat64Interface(new Float64Array(1000)),
+  };
+
+  static buffersRaw = {
+    x: new Float64Array(1000),
+    y: new Float64Array(1000),
+    z: new Float64Array(1000),
+  };
+
+  static getBuffers() {
+    return Vector3SoAInterfaceStatic.buffers;
+  }
+
+  static getBuffersInterface() {
+    return new Vector3SoAInterface(Vector3SoAInterfaceStatic.buffersRaw);
+  }
+
+  static update(index: number) {
+    this.buffers.x.write(index, this.buffers.x.read(index) + 2);
+    this.buffers.y.write(index, this.buffers.y.read(index) - 2);
+    this.buffers.z.write(index, this.buffers.z.read(index) * 2);
+  }
+}
+
+export const vector3BufferObject = {
+  x: new Float64Interface(new Float64Array(1000)),
+  y: new Float64Interface(new Float64Array(1000)),
+  z: new Float64Interface(new Float64Array(1000)),
+};
