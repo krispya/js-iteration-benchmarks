@@ -12,6 +12,7 @@ fs.readdirSync(benchmarksDir).forEach((file) => {
       execSync(`npx ts-node ${path.join(benchmarksDir, file)}`, {
         stdio: "inherit",
       });
+      console.log();
     }
   }
 });

@@ -55,10 +55,10 @@ export class Vector3WithGetSet {
 
 export class Vector3SoAReader {
   public index: number;
-  public store: { x: Float64Array; y: Float64Array; z: Float64Array };
+  public store: { x: Float32Array; y: Float32Array; z: Float32Array };
 
   constructor(
-    store: { x: Float64Array; y: Float64Array; z: Float64Array },
+    store: { x: Float32Array; y: Float32Array; z: Float32Array },
     index: number
   ) {
     this.store = store;

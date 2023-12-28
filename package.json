@@ -11,7 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "benny": "^3.7.1"
+    "iso-bench": "^2.4.7"
   },
   "devDependencies": {
     "@types/node": "^20.10.4",
