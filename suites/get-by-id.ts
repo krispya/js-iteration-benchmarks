@@ -4,6 +4,7 @@ const COUNT = 50;
 
 export class Component {
   static instancesMapArray = new Array<Component | null>(COUNT * 2).fill(null);
+  static instanceMapsArraySparse = new Array<Component>();
   static instanceMap = new Map<number, Component>();
 
   static addArray(entityId: number, component: Component) {
@@ -23,6 +24,15 @@ export class Component {
     const instancesMap = this.instanceMap;
     return instancesMap.get(entityId);
   }
+
+  static addSparse(entityId: number, component: Component) {
+    this.instanceMapsArraySparse[entityId] = component;
+  }
+
+  static getSparse(entityId: number) {
+    const instancesMap = this.instanceMapsArraySparse;
+    return instancesMap[entityId];
+  }
 }
 
 class Test extends Component {
@@ -33,7 +43,7 @@ class Test extends Component {
 
 const bench = new IsoBench("Get by id strategies");
 
-bench.add("Array: Every value filled", () => {
+bench.add("Array: Dense - All filled", () => {
   for (let i = 0; i < COUNT; i++) {
     const component = new Test();
     const entityId = i;
@@ -47,7 +57,7 @@ bench.add("Array: Every value filled", () => {
   };
 });
 
-bench.add("Array: Every other value filled", () => {
+bench.add("Array: Dense - Every other filled", () => {
   for (let i = 0; i < COUNT; i++) {
     const component = new Test();
     const entityId = i * 2;
@@ -57,6 +67,20 @@ bench.add("Array: Every other value filled", () => {
   return () => {
     for (let i = 0; i < COUNT; i++) {
       Component.getArray(i * 2);
+    }
+  };
+});
+
+bench.add("Array: Sparse", () => {
+  for (let i = 0; i < COUNT; i++) {
+    const component = new Test();
+    const entityId = i;
+    Component.addSparse(entityId, component);
+  }
+
+  return () => {
+    for (let i = 0; i < COUNT; i++) {
+      Component.getSparse(i);
     }
   };
 });

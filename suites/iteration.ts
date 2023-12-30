@@ -4,6 +4,7 @@ import {
   Vector3SoAInterface,
   Vector3SoAReader,
   Vector3SoARepresentation,
+  Vector3SoAWithReadWrite,
   Vector3WithGetSet,
 } from "./util/objects";
 
@@ -133,6 +134,24 @@ bench.add("SoA: F32 with read/write interface", () => {
   return () => {
     for (let i = 0; i < ITERATIONS; i++) {
       test(vecInterface);
+    }
+  };
+});
+
+bench.add("SoA: F32 with read/write index interface", () => {
+  // Setup
+  function test() {
+    for (let i = 0; i < COUNT; i++) {
+      const { x, y, z } = Vector3SoAWithReadWrite.getBuffers(i);
+      x.write(x.read() + 2);
+      y.write(y.read() - 2);
+      z.write(z.read() * 2);
+    }
+  }
+
+  return () => {
+    for (let i = 0; i < ITERATIONS; i++) {
+      test();
     }
   };
 });
