@@ -1,17 +1,13 @@
 import { IsoBench } from "iso-bench";
 import {
   Vector3,
+  Vector3GetSetInstance,
   Vector3SoAInterface,
   Vector3SoAReader,
   Vector3SoARepresentation,
   Vector3SoAWithReadWrite,
   Vector3WithGetSet,
 } from "./util/objects";
-
-// Some Notes:
-// In order for a fair benchmark, all test functions need to have monomorphic arguments so that V8 can optimize them.
-// This is why all test functions are defined inside the benchmark function.
-// We also do a warmup to allow for V8 to optimize the code before we start measuring.
 
 const COUNT = 500;
 const ITERATIONS = 2;
@@ -192,6 +188,27 @@ bench.add(
   () => ({
     array: new Array(COUNT).fill(0).map(() => new Vector3WithGetSet(1, 1, 1)),
     test: function test(array: Vector3[]) {
+      for (let i = 0; i < array.length; i++) {
+        array[i].x += 2;
+        array[i].y -= 2;
+        array[i].z *= 2;
+      }
+    },
+  })
+);
+
+bench.add(
+  "AoS: With instance proxied by accessors",
+  ({ array, test }) => {
+    for (let i = 0; i < ITERATIONS; i++) {
+      test(array);
+    }
+  },
+  () => ({
+    array: new Array(COUNT)
+      .fill(0)
+      .map(() => new Vector3GetSetInstance(1, 1, 1)),
+    test: function test(array: Vector3GetSetInstance[]) {
       for (let i = 0; i < array.length; i++) {
         array[i].x += 2;
         array[i].y -= 2;

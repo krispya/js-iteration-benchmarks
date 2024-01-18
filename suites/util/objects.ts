@@ -53,6 +53,38 @@ export class Vector3WithGetSet {
   }
 }
 
+export class Vector3GetSetInstance {
+  public instance: Vector3;
+
+  constructor(x: number, y: number, z: number) {
+    this.instance = new Vector3(x, y, z);
+  }
+
+  get x() {
+    return this.instance.x;
+  }
+
+  set x(value: number) {
+    this.instance.x = value;
+  }
+
+  get y() {
+    return this.instance.y;
+  }
+
+  set y(value: number) {
+    this.instance.y = value;
+  }
+
+  get z() {
+    return this.instance.z;
+  }
+
+  set z(value: number) {
+    this.instance.z = value;
+  }
+}
+
 export class Vector3SoAReader {
   public index: number;
   public store: { x: Float64Array; y: Float64Array; z: Float64Array };
