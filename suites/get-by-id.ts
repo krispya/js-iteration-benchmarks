@@ -43,60 +43,88 @@ class Test extends Component {
 
 const bench = new IsoBench("Get by id strategies");
 
-bench.add("Array: Dense - All filled", () => {
-  for (let i = 0; i < COUNT; i++) {
-    const component = new Test();
-    const entityId = i;
-    Component.addArray(entityId, component);
-  }
-
-  return () => {
+bench.add(
+  "Array: Dense - All filled",
+  () => {
     for (let i = 0; i < COUNT; i++) {
       Component.getArray(i);
     }
-  };
-});
-
-bench.add("Array: Dense - Every other filled", () => {
-  for (let i = 0; i < COUNT; i++) {
-    const component = new Test();
-    const entityId = i * 2;
-    Component.addArray(entityId, component);
+  },
+  () => {
+    for (let i = 0; i < COUNT; i++) {
+      const component = new Test();
+      const entityId = i;
+      Component.addArray(entityId, component);
+    }
   }
+);
 
-  return () => {
+bench.add(
+  "Array: Dense - Every other filled",
+  () => {
     for (let i = 0; i < COUNT; i++) {
       Component.getArray(i * 2);
     }
-  };
-});
-
-bench.add("Array: Sparse", () => {
-  for (let i = 0; i < COUNT; i++) {
-    const component = new Test();
-    const entityId = i;
-    Component.addSparse(entityId, component);
+  },
+  () => {
+    for (let i = 0; i < COUNT; i++) {
+      const component = new Test();
+      const entityId = i * 2;
+      Component.addArray(entityId, component);
+    }
   }
+);
 
-  return () => {
+bench.add(
+  "Array: Dense - Every other filled - mixed",
+  () => {
+    for (let i = 0; i < COUNT; i++) {
+      Component.getArray(i * 2);
+    }
+  },
+  () => {
+    for (let i = 0; i < COUNT; i++) {
+      const component = new Test();
+      const entityId = i * 2;
+      Component.addArray(entityId, component);
+    }
+    for (let i = 0; i < COUNT; i++) {
+      const index = i * 5;
+      Component.instancesMapArray[index] = 0;
+    }
+  }
+);
+
+bench.add(
+  "Array: Sparse",
+  () => {
     for (let i = 0; i < COUNT; i++) {
       Component.getSparse(i);
     }
-  };
-});
-
-bench.add("Map", () => {
-  for (let i = 0; i < COUNT; i++) {
-    const component = new Test();
-    const entityId = i;
-    Component.addMap(entityId, component);
+  },
+  () => {
+    for (let i = 0; i < COUNT; i++) {
+      const component = new Test();
+      const entityId = i;
+      Component.addSparse(entityId, component);
+    }
   }
+);
 
-  return () => {
+bench.add(
+  "Map",
+  () => {
     for (let i = 0; i < COUNT; i++) {
       Component.getMap(i);
     }
-  };
-});
+  },
+  () => {
+    for (let i = 0; i < COUNT; i++) {
+      const component = new Test();
+      const entityId = i;
+      Component.addMap(entityId, component);
+    }
+  }
+);
 
 bench.consoleLog().run();
