@@ -9,7 +9,7 @@ import {
   Vector3WithGetSet,
 } from "./util/objects";
 
-const COUNT = 500;
+const COUNT = 1000;
 const ITERATIONS = 2;
 
 const bench = new IsoBench("Iteration strategies", { samples: 20 });
@@ -29,9 +29,9 @@ bench.add(
     },
     test: function test(vector3: Vector3SoARepresentation) {
       for (let i = 0; i < vector3.x.length; i++) {
-        vector3.x[i] += 2;
-        vector3.y[i] -= 2;
-        vector3.z[i] *= 2;
+        vector3.x[i] += 1.345;
+        vector3.y[i] -= 1.345;
+        vector3.z[i] *= 1.345;
       }
     },
   })
@@ -52,9 +52,9 @@ bench.add(
     },
     test: function test(vector3: Vector3SoARepresentation) {
       for (let i = 0; i < vector3.x.length; i++) {
-        vector3.x[i] += 2;
-        vector3.y[i] -= 2;
-        vector3.z[i] *= 2;
+        vector3.x[i] += 1.345;
+        vector3.y[i] -= 1.345;
+        vector3.z[i] *= 1.345;
       }
     },
   })
@@ -75,9 +75,9 @@ bench.add(
     },
     test: function test(vector3: Vector3SoARepresentation) {
       for (let i = 0; i < vector3.x.length; i++) {
-        vector3.x[i] += 2;
-        vector3.y[i] -= 2;
-        vector3.z[i] *= 2;
+        vector3.x[i] += 1.345;
+        vector3.y[i] -= 1.345;
+        vector3.z[i] *= 1.345;
       }
     },
   })
@@ -102,9 +102,9 @@ bench.add(
     function test(reader: Vector3SoAReader) {
       for (let i = 0; i < reader.store.x.length; i++) {
         reader.index = i;
-        reader.x += 2;
-        reader.y -= 2;
-        reader.z *= 2;
+        reader.x += 1.345;
+        reader.y -= 1.345;
+        reader.z *= 1.345;
       }
     }
 
@@ -130,9 +130,9 @@ bench.add(
 
     function test(vecInterface: Vector3SoAInterface) {
       for (let i = 0; i < COUNT; i++) {
-        vecInterface.x.write(i, vecInterface.x.read(i) + 2);
-        vecInterface.y.write(i, vecInterface.y.read(i) - 2);
-        vecInterface.z.write(i, vecInterface.z.read(i) * 2);
+        vecInterface.x.write(i, vecInterface.x.read(i) + 1.345);
+        vecInterface.y.write(i, vecInterface.y.read(i) - 1.345);
+        vecInterface.z.write(i, vecInterface.z.read(i) * 1.345);
       }
     }
 
@@ -151,9 +151,9 @@ bench.add(
     test: function test() {
       for (let i = 0; i < COUNT; i++) {
         const { x, y, z } = Vector3SoAWithReadWrite.getBuffers(i);
-        x.write(x.read() + 2);
-        y.write(y.read() - 2);
-        z.write(z.read() * 2);
+        x.write(x.read() + 1.345);
+        y.write(y.read() - 1.345);
+        z.write(z.read() * 1.345);
       }
     },
   })
@@ -170,9 +170,9 @@ bench.add(
     array: new Array(COUNT).fill(0).map(() => new Vector3(1, 1, 1)),
     test: function test(array: Vector3[]) {
       for (let i = 0; i < array.length; i++) {
-        array[i].x += 2;
-        array[i].y -= 2;
-        array[i].z *= 2;
+        array[i].x += 1.345;
+        array[i].y -= 1.345;
+        array[i].z *= 1.345;
       }
     },
   })
@@ -189,9 +189,9 @@ bench.add(
     array: new Array(COUNT).fill(0).map(() => new Vector3WithGetSet(1, 1, 1)),
     test: function test(array: Vector3[]) {
       for (let i = 0; i < array.length; i++) {
-        array[i].x += 2;
-        array[i].y -= 2;
-        array[i].z *= 2;
+        array[i].x += 1.345;
+        array[i].y -= 1.345;
+        array[i].z *= 1.345;
       }
     },
   })
@@ -210,9 +210,9 @@ bench.add(
       .map(() => new Vector3GetSetInstance(1, 1, 1)),
     test: function test(array: Vector3GetSetInstance[]) {
       for (let i = 0; i < array.length; i++) {
-        array[i].x += 2;
-        array[i].y -= 2;
-        array[i].z *= 2;
+        array[i].x += 1.345;
+        array[i].y -= 1.345;
+        array[i].z *= 1.345;
       }
     },
   })

@@ -3,7 +3,7 @@ import { IsoBench } from "iso-bench";
 const COUNT = 50;
 
 export class Component {
-  static instancesMapArray = new Array<Component | null>(COUNT * 2).fill(null);
+  static instancesMapArray = new Array<Component | null>(COUNT * 2).fill(false);
   static instanceMapsArraySparse = new Array<Component>();
   static instanceMap = new Map<number, Component>();
 
@@ -90,7 +90,7 @@ bench.add(
     }
     for (let i = 0; i < COUNT; i++) {
       const index = i * 5;
-      Component.instancesMapArray[index] = 0;
+      Component.instancesMapArray[index] = true;
     }
   }
 );
