@@ -15,7 +15,7 @@ const ITERATIONS = 2;
 const bench = new IsoBench("Iteration strategies", { samples: 20 });
 
 bench.add(
-  "SoA: Array",
+  "SoA: Array contiguous",
   ({ vector3, test }) => {
     for (let i = 0; i < ITERATIONS; i++) {
       test(vector3);
@@ -29,6 +29,58 @@ bench.add(
     },
     test: function test(vector3: Vector3SoARepresentation) {
       for (let i = 0; i < vector3.x.length; i++) {
+        vector3.x[i] += 1.345;
+        vector3.y[i] -= 1.345;
+        vector3.z[i] *= 1.345;
+      }
+    },
+  })
+);
+
+bench.add(
+  "SoA: Array contiguous with index indirection",
+  ({ test }) => {
+    for (let i = 0; i < ITERATIONS; i++) {
+      test();
+    }
+  },
+  () => {
+    const vector3 = {
+      x: new Array(COUNT).fill(1),
+      y: new Array(COUNT).fill(1),
+      z: new Array(COUNT).fill(1),
+    };
+
+    const indices = new Uint32Array(COUNT).fill(0).map((_, i) => i);
+
+    return {
+      test: function test() {
+        for (let i = 0; i < vector3.x.length; i++) {
+          const index = indices[i];
+          vector3.x[index] += 1.345;
+          vector3.y[index] -= 1.345;
+          vector3.z[index] *= 1.345;
+        }
+      },
+    };
+  }
+);
+
+bench.add(
+  "SoA: Array sparse",
+  ({ vector3, test }) => {
+    for (let i = 0; i < ITERATIONS; i++) {
+      test(vector3);
+    }
+  },
+  () => ({
+    vector3: {
+      x: new Array(COUNT * 2).fill(1),
+      y: new Array(COUNT * 2).fill(1),
+      z: new Array(COUNT * 2).fill(1),
+    },
+    test: function test(vector3: Vector3SoARepresentation) {
+      for (let i = 0; i < COUNT * 2; i += 2) {
         vector3.x[i] += 1.345;
         vector3.y[i] -= 1.345;
         vector3.z[i] *= 1.345;
@@ -58,6 +110,35 @@ bench.add(
       }
     },
   })
+);
+
+bench.add(
+  "SoA: Float64Array + index indirection",
+  ({ test }) => {
+    for (let i = 0; i < ITERATIONS; i++) {
+      test();
+    }
+  },
+  () => {
+    const vector3 = {
+      x: new Float64Array(COUNT).fill(1),
+      y: new Float64Array(COUNT).fill(1),
+      z: new Float64Array(COUNT).fill(1),
+    };
+
+    const indices = new Uint32Array(COUNT).fill(0).map((_, i) => i);
+
+    return {
+      test: function test() {
+        for (let i = 0; i < vector3.x.length; i++) {
+          const index = indices[i];
+          vector3.x[index] += 1.345;
+          vector3.y[index] -= 1.345;
+          vector3.z[index] *= 1.345;
+        }
+      },
+    };
+  }
 );
 
 bench.add(
